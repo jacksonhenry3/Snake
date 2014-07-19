@@ -6,7 +6,7 @@ if (!Array.prototype.last){
 
 var idealEdge         = 15,
 	initialSpeed      = 20, //in cells per second
-	initialLength     = 20,
+	initialLength     = 1,
 	up                = 38,
 	down              = 40,
 	left              = 37,
@@ -18,7 +18,7 @@ function screenH(){return(window.innerHeight)}
 	window.cellDim           = {w: screenW()/window.nCells.hori,h:screenH()/window.nCells.vert},
 	intialSnakeBlocks = [];
 	// intialSnakeBlocks = [{x:Math.floor(window.nCells.hori/2),y:Math.floor(window.nCells.vert/2)},{x:Math.floor(window.nCells.hori/2),y:Math.floor(window.nCells.vert/2)+1},{x:Math.floor(window.nCells.hori/2),y:Math.floor(window.nCells.vert/2)+2}];
-	for (var i = initialLength ; i >= 0; i--) {
+	for (var i = initialLength ; i > 0; i--) {
 		intialSnakeBlocks.push({x:Math.floor(window.nCells.hori/2),y:Math.floor(window.nCells.vert/2)+i})
 
 
@@ -54,7 +54,7 @@ var svg = d3.select("#game").append("svg:svg")
 			.attr("y1",function(d){return(d.y1)})
 			.attr("y2",function(d){return(d.y2)})
 			.attr("stroke-width",.2)
-			.attr("stroke",'rgb(0,0,0)');
+			.attr("stroke",'rgba(0,0,0,0)');
 	};
 
 function resize()
@@ -135,9 +135,12 @@ function resize()
 			window.clearInterval(gameLoop)
 		}
 
-		if (this.head == fruitPos)
+		if (this.head().x == fruitPos.x && this.head().y == fruitPos.y)
 		{
-			
+			this.blocks.unshift({x:-1,y:-1})
+			this.newBlock()		
+			fruitPos = genFruit()
+
 		}
 
 
@@ -185,7 +188,7 @@ function genFruit()
 {
 	x = Math.floor(Math.random()*window.nCells.hori)
 	y = Math.floor(Math.random()*window.nCells.vert)
-
+		svg.selectAll('rect.fruit').remove()
 		svg.selectAll('rect.fruit')
 			.data([{x:x,y:y}])
 			.enter()
