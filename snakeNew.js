@@ -4,8 +4,8 @@ if (!Array.prototype.last){
     };
 };
 
-var idealEdge         = 15,
-	initialSpeed      = 20, //in cells per second
+var idealEdge         = 20,
+	initialSpeed      = 10, //in cells per second
 	initialLength     = 1,
 	up                = 38,
 	down              = 40,
@@ -137,9 +137,14 @@ function resize()
 
 		if (this.head().x == fruitPos.x && this.head().y == fruitPos.y)
 		{
-			this.blocks.unshift({x:-1,y:-1})
+			x = Math.floor(Math.random()*window.nCells.hori)
+			y = Math.floor(Math.random()*window.nCells.vert)
+			this.blocks.unshift({x:x,y:y})
 			this.newBlock()		
 			fruitPos = genFruit()
+			snake.speed+=2
+			window.clearInterval(gameLoop)
+			gameLoop = window.setInterval(function(){snake.move()},1000/snake.speed)
 
 		}
 
@@ -160,7 +165,7 @@ function collide()
 {
 	head = snake.head()
 
-	if (head.x <= 0 || head.y <= 0 || head.x >= window.nCells.hori || head.y >= window.nCells.vert)
+	if (head.x <= 0 || head.y < 0 || head.x >= window.nCells.hori || head.y >= window.nCells.vert)
 	{
 		return(true)
 	}
@@ -188,16 +193,15 @@ function genFruit()
 {
 	x = Math.floor(Math.random()*window.nCells.hori)
 	y = Math.floor(Math.random()*window.nCells.vert)
-		svg.selectAll('rect.fruit').remove()
-		svg.selectAll('rect.fruit')
+		svg.selectAll('circle.fruit').remove()
+		svg.selectAll('circle.fruit')
 			.data([{x:x,y:y}])
 			.enter()
-			.append('rect')
+			.append('circle')
 			.attr('class','fruit')
-			.attr("width",window.cellDim.w)
-			.attr("height",window.cellDim.h)
-			.attr('x',function(d){return((d.x)*window.cellDim.w)})
-			.attr('y',function(d){return((d.y)*window.cellDim.h)})
+			.attr("r",window.cellDim.w/2)
+			.attr('cx',function(d){return((d.x+1/2)*window.cellDim.w)})
+			.attr('cy',function(d){return((d.y+1/2)*window.cellDim.h)})
 			.attr('fill','rgba(255,0,0,.2)')
 	return({x:x,y:y})
 }
