@@ -4,7 +4,10 @@ if (!Array.prototype.last){
     };
 };
 
-var idealEdge         = 20,
+function objEquiv(obj1,obj2){for(var key in obj1){if (obj1[key]!=obj2[key]){return false}}return true}
+
+
+var idealEdge         = 30,
 	initialSpeed      = 10, //in cells per second
 	initialLength     = 1,
 	up                = 38,
@@ -12,21 +15,48 @@ var idealEdge         = 20,
 	left              = 37,
 	right             = 39,
 	initialDirection  = up;
-function screenW(){return(window.innerWidth)}
-function screenH(){return(window.innerHeight)}
+
+function screenW(){return(window.innerWidth-100)}
+function screenH(){return(window.innerHeight-100)}
 	window.nCells            = {hori:Math.floor(screenW()/idealEdge),vert:Math.floor(screenH()/idealEdge)},
 	window.cellDim           = {w: screenW()/window.nCells.hori,h:screenH()/window.nCells.vert},
 	intialSnakeBlocks = [];
 	// intialSnakeBlocks = [{x:Math.floor(window.nCells.hori/2),y:Math.floor(window.nCells.vert/2)},{x:Math.floor(window.nCells.hori/2),y:Math.floor(window.nCells.vert/2)+1},{x:Math.floor(window.nCells.hori/2),y:Math.floor(window.nCells.vert/2)+2}];
 	for (var i = initialLength ; i > 0; i--) {
 		intialSnakeBlocks.push({x:Math.floor(window.nCells.hori/2),y:Math.floor(window.nCells.vert/2)+i})
+	}
 
+d3.select("body").on("keydown", function()
+	{
+		newDir = d3.event.keyCode
+		if ([up,down,left,right].indexOf(newDir) > -1 ){
+			if (newDir ==down && snake.direction !=up)
+			{
+				snake.direction = newDir
+			}
+			if (newDir ==up && snake.direction !=down)
+			{
+				snake.direction = newDir
+			}
+			if (newDir ==left && snake.direction !=right)
+			{
+				snake.direction = newDir
+			}
+			if (newDir ==right && snake.direction !=left)
+			{
+				snake.direction = newDir
+			}
+		}
+	}
+	)
 
-d3.select("body").on("keydown", function(){if ([up,down,left,right].indexOf(d3.event.keyCode) > -1 ){snake.direction = d3.event.keyCode}})}
 
 var svg = d3.select("#game").append("svg:svg")
 	.attr("width", screenW())
-	.attr("height", screenH());
+	.attr("height", screenH())
+	.style('position','relative')
+	.style('top','40px')
+	.style('left','30px');
 
 // ============== The Grid =================
 	function makeGrid()
@@ -54,7 +84,7 @@ var svg = d3.select("#game").append("svg:svg")
 			.attr("y1",function(d){return(d.y1)})
 			.attr("y2",function(d){return(d.y2)})
 			.attr("stroke-width",.2)
-			.attr("stroke",'rgba(0,0,0,0)');
+			.attr("stroke",'rgba(0,0,0,.2)');
 	};
 
 function resize()
@@ -86,7 +116,7 @@ function resize()
 		length       : initialLength,
 		speed        : initialSpeed,
 	};
-
+	document.getElementById('score').innerHTML = snake.length
 	snake.newBlock  = function()
 	{
 		svg.selectAll('rect.snake').remove()
@@ -135,18 +165,27 @@ function resize()
 			window.clearInterval(gameLoop)
 		}
 
-		if (this.head().x == fruitPos.x && this.head().y == fruitPos.y)
+		for (var i = fruitPos.length - 1; i >= 0; i--) {
+			
+		
+		if (this.head().x == fruitPos[i].x && this.head().y == fruitPos[i].y)
 		{
-			x = Math.floor(Math.random()*window.nCells.hori)
-			y = Math.floor(Math.random()*window.nCells.vert)
-			this.blocks.unshift({x:x,y:y})
+
+							// this.bl
+			this.blocks.unshift({x:window.nCells.hori/2,y:-1})
+			snake.length+=1
+			document.getElementById('score').innerHTML = snake.length
+			
+
+
 			this.newBlock()		
-			fruitPos = genFruit()
-			snake.speed+=2
+			fruitPos = addFruit(fruitPos,i)
+			snake.speed+=.5
 			window.clearInterval(gameLoop)
 			gameLoop = window.setInterval(function(){snake.move()},1000/snake.speed)
 
 		}
+		};
 
 
 
@@ -165,12 +204,12 @@ function collide()
 {
 	head = snake.head()
 
-	if (head.x <= 0 || head.y < 0 || head.x >= window.nCells.hori || head.y >= window.nCells.vert)
+	if (head.x < 0 || head.y < 0 || head.x >= window.nCells.hori || head.y >= window.nCells.vert)
 	{
 		return(true)
 	}
 	for (var i = snake.blocks.length - 2; i >= 0; i--) {
-		if (snake.blocks[i].y == head.y && snake.blocks[i].x == head.x)
+		if (objEquiv(snake.blocks[i],head))
 		{
 			
 			return(true)
@@ -191,11 +230,16 @@ function init()
 
 function genFruit()
 {
-	x = Math.floor(Math.random()*window.nCells.hori)
-	y = Math.floor(Math.random()*window.nCells.vert)
+	da = []
+	for (var i = 10 - 1; i >= 0; i--) {
+			x = Math.floor(Math.random()*(window.nCells.hori-2))+1
+		y = Math.floor(Math.random()*(window.nCells.vert-2))+1
+		da.push({x:x,y:y})
+	};
+
 		svg.selectAll('circle.fruit').remove()
 		svg.selectAll('circle.fruit')
-			.data([{x:x,y:y}])
+			.data(da)
 			.enter()
 			.append('circle')
 			.attr('class','fruit')
@@ -203,9 +247,29 @@ function genFruit()
 			.attr('cx',function(d){return((d.x+1/2)*window.cellDim.w)})
 			.attr('cy',function(d){return((d.y+1/2)*window.cellDim.h)})
 			.attr('fill','rgba(255,0,0,.2)')
-	return({x:x,y:y})
+	return(da)
 }
 
+function addFruit(f,i)
+{
+	console.log(i)
+			x1 = Math.floor(Math.random()*(window.nCells.hori-2))+1
+		y1 = Math.floor(Math.random()*(window.nCells.vert-2))+1
+	f.splice(i,1)
+	f.unshift({x:x1,y:y1})
+			svg.selectAll('circle.fruit').remove()
+		svg.selectAll('circle.fruit')
+			.data(da)
+			.enter()
+			.append('circle')
+			.attr('class','fruit')
+			.attr("r",window.cellDim.w/2)
+			.attr('cx',function(d){return((d.x+1/2)*window.cellDim.w)})
+			.attr('cy',function(d){return((d.y+1/2)*window.cellDim.h)})
+			.attr('fill','rgba(255,0,0,.2)')
+	return(f)
+
+}
 
 init()
 
