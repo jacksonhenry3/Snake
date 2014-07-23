@@ -180,7 +180,7 @@ function resize()
 
 			this.newBlock()		
 			fruitPos = addFruit(fruitPos,i)
-			snake.speed+=.5
+			snake.speed+=.25
 			window.clearInterval(gameLoop)
 			gameLoop = window.setInterval(function(){snake.move()},1000/snake.speed)
 
