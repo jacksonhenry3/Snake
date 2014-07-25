@@ -278,6 +278,7 @@ d3.select("body").on("keydown", function()
 	snake.blockData = [{x:Math.floor(board.nCells.hori/2),y:Math.floor(board.nCells.vert/2)}];
 	snake.speed = 10;
 	snake.direction = up;
+	scoreBoard.innerHTML = snake.getLength();
 	snake.start()
 	fruitPos = genFruit()
 }
