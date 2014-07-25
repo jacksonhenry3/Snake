@@ -168,6 +168,11 @@ function Snake(board,options)
 			if (this.collide())
 			{
 				this.stop();
+				document.getElementById('banner').style.backgroundColor = 'rgb(200,35,60)'
+				document.getElementById('play').innerHTML = 'Try to beat '+snake.getLength()
+				document.getElementById('banner').style.left = '0%'
+				d3.select("body").on("keydown", function()
+				{if ( d3.event.keyCode===13){init()}})
 			}
 
 			for (var f = 0;f <fruitPos.length;f++)
@@ -269,6 +274,10 @@ d3.select("body").on("keydown", function()
 	)
 
 	board.drawGrid()
+	// snake.blockData()
+	snake.blockData = [{x:Math.floor(board.nCells.hori/2),y:Math.floor(board.nCells.vert/2)}];
+	snake.speed = 10;
+	snake.direction = up;
 	snake.start()
 	fruitPos = genFruit()
 }
