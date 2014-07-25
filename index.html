@@ -3,6 +3,7 @@
 <head>
 	<meta charset='UTF-8'>
 	<meta name="viewport" content="width=device-width, height=device-height">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800' rel='stylesheet' type='text/css'>
 	<!-- <link rel="shortcut icon" href="CTlogo.png"> -->
 	<title>JS_Snake</title>
 	<link rel='stylesheet' href='styl.css'>
@@ -10,8 +11,14 @@
 	
 </head>
 <body>
-	<h1 id = 'score'></h1>
+	<div id = 'banner' class = 'start'>
+		<h1><span class = 'light'>JS</span> <span class = 'heavy'>Snake</span></h1>
+		<button id = 'play' onclick = 'init()'>play</button>
+		<p class = 'light'>click or press enter</p>
+	</div>
+	<div id = 'score' class = 'heavy'></div>
 	<div id = 'game'></div>
 </body>
-<script type="text/javascript" src = 'snakeNew.js'></script>
+<script type="text/javascript" src = 'snake.js'></script>
+<!-- <script type="text/javascript" src = 'webAudioTest.js'></script> -->
 </html>

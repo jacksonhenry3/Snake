@@ -4,6 +4,7 @@ html,body
 	padding:0px;
 	overflow:hidden;
 	background-color: #DDD;
+		font-family: 'Open Sans', sans-serif;
 }
 
 #game
@@ -18,7 +19,6 @@ html,body
 svg
 {
 	background-color: #efefef;
-	padding:20px;
 	box-shadow: 0 0 25px rgba(0,0,0,.2);
 }
 
@@ -27,4 +27,71 @@ h1
 	text-align: center;
 	font-family: sans-serif;
 	margin:0px;
+}
+
+#banner
+{
+	text-align: center;
+	position: absolute;
+	width:100%;
+	height:40%;
+	left:0%;
+	background-color: rgba(35,200,60,1);
+	z-index:100;
+	top:25%;
+	box-shadow: 0 0 25px rgba(0,0,0,.4);
+	transition:all .3s;
+}
+
+#banner h1
+{
+	font-family: 'Open Sans', sans-serif;
+	font-weight: lighter;
+	
+	font-size: 400%;
+}
+
+.light
+{
+	color:rgba(255,255,255,.7);
+	font-weight: 100;
+
+}
+.heavy
+{
+	color:rgba(255,255,255,.9);
+	font-weight: 800;
+}
+
+button
+{
+	cursor: pointer;
+	margin:30px;
+	margin-top:50px;
+	margin-bottom: 10px;
+	border:none;
+	background-color:rgba(0,0,0,.1);
+	font-size: 200%;
+	padding:15px;
+	padding-left:50px;
+	padding-right:50px;
+	color:rgba(255,255,255,.9);
+	box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
+
+#score
+{
+	padding:5px;
+	font-family: 'Open Sans', sans-serif;
+	text-align: center;
+	position: absolute;
+	right:-55px;
+	top:25px;
+	font-size: 20px;
+	width:200px;
+	background-color: rgba(35,200,60,1);
+	z-index: 200;
+	-ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg); /* Standard syntax */
 }
