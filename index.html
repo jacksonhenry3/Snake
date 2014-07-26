@@ -9,17 +9,22 @@
 	<link rel='stylesheet' href='styl.css'>
 	<script src="d3.js" charset="utf-8"></script>
 	
+	<script type = 'text/javascript'>
+		function objEquiv(obj1,obj2){for(var key in obj1){if (obj1[key]!=obj2[key]){return false}}return true}
+	</script>
+	<script type="text/javascript" src = 'gameBoard.js'></script>
+	<script type="text/javascript" src = 'snake.js'></script>
+	
 </head>
 <body>
 	<div id = 'banner' class = 'start'>
 		<h1><span class = 'light'>JS</span> <span class = 'heavy'>Snake</span></h1>
-		<p class = 'light' id = 'otherScore'></p>
 		<button id = 'play' onclick = 'init()'>play</button>
 		<p class = 'light'>click or press enter</p>
 	</div>
 	<div id = 'score' class = 'heavy'></div>
 	<div id = 'game'></div>
 </body>
-<script type="text/javascript" src = 'snake.js'></script>
+<script type="text/javascript" src = 'game.js'></script>
 <!-- <script type="text/javascript" src = 'webAudioTest.js'></script> -->
 </html>
