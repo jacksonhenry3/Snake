@@ -1,2 +1,2 @@
-<a href = 'http://jacksonhenry3.github.io/Snake/'>Play!</a>
+<a href = 'http://jacksonhenry3.github.io/Snake/'>Play!</a><br>
 Snake is a classic arcade game. I decided to recreate a simple version of it for my first foray in to web gaming. Use the arrow keys to turn, get the green circles. Each circle you get increase your length and your speed and gives you one point. good luck!
